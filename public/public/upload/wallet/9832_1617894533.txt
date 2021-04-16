@@ -1,0 +1,485 @@
+{
+   "id":"4013",
+   "title":"Expense - milestone - good coding practice",
+   "description":"When an employee fill out an expense report the money must be paid out within one week. After filling out the expense report the manager should approve the expense report. If the manager approves the expense report the money can be paid out by finance. If the case is awaiting manager approval payout cannot happen. If the manager rejects the expense report he must later approve the expense report in order to payout to happen. The employee can redraw the expense report. Doing so will close the case. Once payout has been done the case is closed.---Note: you cannot approve or reject before expense report is filled out-We cannot redraw expense before we fill it out.",
+   "category":"Default",
+   "modified":"2021-03-19T11:51:39.497",
+   "events":[
+      {
+         "@id":"Case",
+         "@label":"When an employee fill out an expense report the mo",
+         "@description":"<p>When an employee fill out an expense report the money must be paid out<\/p>",
+         "@type":"nesting"
+      },
+      {
+         "@id":"FilloutExpenseReport",
+         "@label":"Fill out an expense report",
+         "@description":"<p>fill out an expense report<\/p>\n<p>Log into XX sytem and<\/p>",
+         "@roles":"Employee",
+         "@parent":"Case"
+      },
+      {
+         "@id":"Approve",
+         "@label":"Approve",
+         "@description":"<p>approves<\/p>",
+         "@roles":"Manager",
+         "@parent":"Case"
+      },
+      {
+         "@id":"Payout",
+         "@label":"Pay out",
+         "@description":"<p>paid out<\/p>\n<p>link<\/p>\n<p> <\/p>",
+         "@roles":"Finance",
+         "@parent":"Case"
+      },
+      {
+         "@id":"RejectX",
+         "@label":"Reject",
+         "@description":"<p>rejects<\/p>",
+         "@roles":"Manager",
+         "@parent":"Case"
+      },
+      {
+         "@id":"Withdraw",
+         "@label":"Withdraw the expense report",
+         "@description":"<p>withdraw the expense report<\/p>",
+         "@roles":"Employee",
+         "@parent":"Case"
+      }
+   ],
+   "roles":[
+      {
+         "@specification":"Employee speficiation",
+         "@description":"employee",
+         "#text":"Employee"
+      },
+      {
+         "@description":"finance",
+         "#text":"Finance"
+      },
+      "Lederen",
+      {
+         "@description":"manager",
+         "#text":"Manager"
+      }
+   ],
+   "Scenarios":{
+      "log":[
+         {
+            "@id":"26332",
+            "@title":"happy path",
+            "@init":"2018-10-30T14:23:43.9840000Z",
+            "@description":"<p>XXIdeal simulation<\/p>\n<p>æøå<\/p>\n<p>zya<\/p>\n<p>&lt;&gt;<\/p>\n<p>&amp;<\/p>\n<p>etc<\/p>\n<p>\"<\/p>\n<p>kkk<\/p>",
+            "@percentage":"87.00",
+            "@type":"Required",
+            "@isAccepting":"true",
+            "@isScenario":"true",
+            "@created":"2017-06-16T16:10:33.950",
+            "@createdBy":"4",
+            "@modified":"2021-02-28T16:16:41.840",
+            "@modifiedBy":"4",
+            "event":[
+               {
+                  "@id":"FilloutExpenseReport",
+                  "@role":"Employee",
+                  "@label":"Fill out an expense report",
+                  "@userid":"Portal:4",
+                  "@user":"Morten Marquard"
+               },
+               {
+                  "@id":"Approve",
+                  "@role":"Manager",
+                  "@label":"Approve",
+                  "@userid":"Portal:4",
+                  "@user":"Morten Marquard"
+               },
+               {
+                  "@id":"Payout",
+                  "@role":"Finance",
+                  "@label":"Pay out",
+                  "@userid":"Portal:4",
+                  "@user":"Morten Marquard"
+               }
+            ],
+            "advancetime":[
+               {
+                  "@delta":"P1D",
+                  "@durationFrom":"",
+                  "@durationTo":"",
+                  "@description":"",
+                  "@userid":"Portal:4",
+                  "@user":"Morten Marquard"
+               },
+               {
+                  "@delta":"P2D",
+                  "@durationFrom":"",
+                  "@durationTo":"",
+                  "@description":"",
+                  "@userid":"Portal:4",
+                  "@user":"Morten Marquard"
+               }
+            ]
+         },
+         {
+            "@id":"60814",
+            "@title":"We spoke with the manager and then he approved",
+            "@init":"2019-02-28T18:27:42.1390000Z",
+            "@description":"<p>Sometimes managers rejects the expense report. After a chat he changes his mind and approves it<\/p>",
+            "@percentage":"3.00",
+            "@type":"Required",
+            "@isAccepting":"true",
+            "@isScenario":"true",
+            "@created":"2019-02-28T18:27:41.733",
+            "@createdBy":"4",
+            "@modified":"2021-02-28T16:16:51.393",
+            "@modifiedBy":"4",
+            "event":[
+               {
+                  "@id":"FilloutExpenseReport",
+                  "@role":"Employee",
+                  "@label":"Fill out an expense report",
+                  "@userid":"Portal:4",
+                  "@user":"Morten Marquard"
+               },
+               {
+                  "@id":"RejectX",
+                  "@role":"Manager",
+                  "@label":"Reject",
+                  "@userid":"Portal:4",
+                  "@user":"Morten Marquard"
+               },
+               {
+                  "@id":"Approve",
+                  "@role":"Manager",
+                  "@label":"Approve",
+                  "@userid":"Portal:4",
+                  "@user":"Morten Marquard"
+               },
+               {
+                  "@id":"Payout",
+                  "@role":"Finance",
+                  "@label":"Pay out",
+                  "@userid":"Portal:4",
+                  "@user":"Morten Marquard"
+               }
+            ]
+         },
+         {
+            "@id":"61454",
+            "@title":"Employee regret expense report - fast",
+            "@init":"2019-03-07T19:16:05.2120000Z",
+            "@description":"",
+            "@percentage":"5.00",
+            "@type":"Required",
+            "@isAccepting":"true",
+            "@isScenario":"true",
+            "@created":"2019-03-07T20:16:06.047",
+            "@createdBy":"4",
+            "@modified":"2020-02-13T14:23:36.040",
+            "@modifiedBy":"4",
+            "event":[
+               {
+                  "@id":"FilloutExpenseReport",
+                  "@role":"Employee",
+                  "@label":"Fill out an expense report",
+                  "@userid":"Portal:4",
+                  "@user":"Morten Marquard"
+               },
+               {
+                  "@id":"Withdraw",
+                  "@role":"Employee",
+                  "@label":"Withdraw the expense report",
+                  "@userid":"Portal:4",
+                  "@user":"Morten Marquard"
+               }
+            ]
+         },
+         {
+            "@id":"61455",
+            "@title":"Manager rejects - employee withdraw",
+            "@init":"2019-03-07T19:16:37.0530000Z",
+            "@description":"",
+            "@percentage":"1.00",
+            "@type":"Required",
+            "@isAccepting":"true",
+            "@isScenario":"true",
+            "@created":"2019-03-07T20:16:36.540",
+            "@createdBy":"4",
+            "@modified":"2020-09-07T23:01:21.107",
+            "@modifiedBy":"4",
+            "event":[
+               {
+                  "@id":"FilloutExpenseReport",
+                  "@role":"Employee",
+                  "@label":"Fill out an expense report",
+                  "@userid":"Portal:4",
+                  "@user":"Morten Marquard"
+               },
+               {
+                  "@id":"RejectX",
+                  "@role":"Manager",
+                  "@label":"Reject",
+                  "@userid":"Portal:4",
+                  "@user":"Morten Marquard"
+               },
+               {
+                  "@id":"Withdraw",
+                  "@role":"Employee",
+                  "@label":"Withdraw the expense report",
+                  "@userid":"Portal:4",
+                  "@user":"Morten Marquard"
+               }
+            ]
+         },
+         {
+            "@id":"61457",
+            "@title":"Edit after reject then approved",
+            "@init":"2019-03-07T19:18:41.326Z",
+            "@description":"",
+            "@percentage":"2.00",
+            "@type":"Required",
+            "@isAccepting":"true",
+            "@isScenario":"true",
+            "@created":"2019-03-07T20:18:40.850",
+            "@createdBy":"4",
+            "@modified":"2021-02-28T16:16:56.100",
+            "@modifiedBy":"4",
+            "event":[
+               {
+                  "@id":"FilloutExpenseReport",
+                  "@role":"Employee",
+                  "@label":"Fill out an expense report",
+                  "@userid":"Portal:4",
+                  "@user":"Morten Marquard"
+               },
+               {
+                  "@id":"RejectX",
+                  "@role":"Manager",
+                  "@label":"Reject",
+                  "@userid":"Portal:4",
+                  "@user":"Morten Marquard"
+               },
+               {
+                  "@id":"FilloutExpenseReport",
+                  "@role":"Employee",
+                  "@label":"Fill out an expense report",
+                  "@userid":"Portal:4",
+                  "@user":"Morten Marquard"
+               },
+               {
+                  "@id":"Approve",
+                  "@role":"Manager",
+                  "@label":"Approve",
+                  "@userid":"Portal:4",
+                  "@user":"Morten Marquard"
+               },
+               {
+                  "@id":"Payout",
+                  "@role":"Finance",
+                  "@label":"Pay out",
+                  "@userid":"Portal:4",
+                  "@user":"Morten Marquard"
+               }
+            ]
+         },
+         {
+            "@id":"77551",
+            "@title":"Manager changes his mind many times",
+            "@init":"2019-07-20T11:18:51.2410000Z",
+            "@description":"",
+            "@percentage":"1.00",
+            "@type":"Optional",
+            "@isAccepting":"true",
+            "@isScenario":"true",
+            "@created":"2019-07-20T13:18:49.813",
+            "@createdBy":"4",
+            "@modified":"2021-02-28T16:18:01.507",
+            "@modifiedBy":"4",
+            "event":[
+               {
+                  "@id":"FilloutExpenseReport",
+                  "@role":"Employee",
+                  "@label":"Fill out an expense report",
+                  "@userid":"Portal:4",
+                  "@user":"Morten Marquard"
+               },
+               {
+                  "@id":"Approve",
+                  "@role":"Manager",
+                  "@label":"Approve",
+                  "@userid":"Portal:4",
+                  "@user":"Morten Marquard"
+               },
+               {
+                  "@id":"RejectX",
+                  "@role":"Manager",
+                  "@label":"Reject",
+                  "@userid":"Portal:4",
+                  "@user":"Morten Marquard"
+               },
+               {
+                  "@id":"Approve",
+                  "@role":"Manager",
+                  "@label":"Approve",
+                  "@userid":"Portal:4",
+                  "@user":"Morten Marquard"
+               },
+               {
+                  "@id":"Payout",
+                  "@role":"Finance",
+                  "@label":"Pay out",
+                  "@userid":"Portal:4",
+                  "@user":"Morten Marquard"
+               }
+            ]
+         },
+         {
+            "@id":"210210",
+            "@title":"2 x advance time 3 days",
+            "@init":"2020-05-05T13:43:00.0000000Z",
+            "@description":"",
+            "@percentage":"0.00",
+            "@type":"Optional",
+            "@isAccepting":"true",
+            "@isScenario":"true",
+            "@created":"2020-05-18T15:43:04.577",
+            "@createdBy":"4",
+            "@modified":"2021-02-28T16:17:16.617",
+            "@modifiedBy":"4",
+            "event":[
+               {
+                  "@id":"FilloutExpenseReport",
+                  "@role":"Employee",
+                  "@label":"Fill out an expense report",
+                  "@userid":"Portal:4",
+                  "@user":"Morten Marquard"
+               },
+               {
+                  "@id":"Approve",
+                  "@role":"Manager",
+                  "@label":"Approve",
+                  "@userid":"Portal:4",
+                  "@user":"Morten Marquard"
+               },
+               {
+                  "@id":"Payout",
+                  "@role":"Finance",
+                  "@label":"Pay out",
+                  "@userid":"Portal:4",
+                  "@user":"Morten Marquard"
+               }
+            ],
+            "advancetime":[
+               {
+                  "@delta":"P3D",
+                  "@durationFrom":"",
+                  "@durationTo":"",
+                  "@description":"",
+                  "@userid":"Portal:4",
+                  "@user":"Morten Marquard"
+               },
+               {
+                  "@delta":"P3D",
+                  "@durationFrom":"",
+                  "@durationTo":"",
+                  "@description":"",
+                  "@userid":"Portal:4",
+                  "@user":"Morten Marquard"
+               }
+            ]
+         },
+         {
+            "@id":"1005043",
+            "@title":"New happy path",
+            "@init":"2021-01-01T22:35:33.3190000Z",
+            "@description":"",
+            "@percentage":"0.00",
+            "@type":"Optional",
+            "@isAccepting":"true",
+            "@isScenario":"true",
+            "@created":"2021-01-01T23:35:30.060",
+            "@createdBy":"4",
+            "@modified":"2021-02-28T16:17:22.630",
+            "@modifiedBy":"4",
+            "event":[
+               {
+                  "@id":"FilloutExpenseReport",
+                  "@role":"Employee",
+                  "@label":"Fill out an expense report",
+                  "@userid":"Portal:4",
+                  "@user":"Morten Marquard"
+               },
+               {
+                  "@id":"Approve",
+                  "@role":"Manager",
+                  "@label":"Approve",
+                  "@userid":"Portal:4",
+                  "@user":"Morten Marquard"
+               },
+               {
+                  "@id":"Payout",
+                  "@role":"Finance",
+                  "@label":"Pay out",
+                  "@userid":"Portal:4",
+                  "@user":"Morten Marquard"
+               }
+            ]
+         },
+         {
+            "@id":"1007490",
+            "@title":"dsaadas",
+            "@init":"2021-01-27T07:19:37.6360000Z",
+            "@description":"",
+            "@percentage":"1.00",
+            "@type":"Optional",
+            "@isAccepting":"true",
+            "@isScenario":"true",
+            "@created":"2021-01-27T08:19:33.657",
+            "@createdBy":"4",
+            "@modified":"2021-02-28T16:17:26.223",
+            "@modifiedBy":"4",
+            "event":[
+               {
+                  "@id":"FilloutExpenseReport",
+                  "@role":"Employee",
+                  "@label":"Fill out an expense report",
+                  "@userid":"Portal:4",
+                  "@user":"Morten Marquard"
+               },
+               {
+                  "@id":"Approve",
+                  "@role":"Manager",
+                  "@label":"Approve",
+                  "@userid":"Portal:4",
+                  "@user":"Morten Marquard"
+               },
+               {
+                  "@id":"Payout",
+                  "@role":"Finance",
+                  "@label":"Pay out",
+                  "@userid":"Portal:4",
+                  "@user":"Morten Marquard"
+               }
+            ],
+            "advancetime":[
+               {
+                  "@delta":"P2D",
+                  "@durationFrom":"",
+                  "@durationTo":"",
+                  "@description":"",
+                  "@userid":"Portal:4",
+                  "@user":"Morten Marquard"
+               },
+               {
+                  "@delta":"P3D",
+                  "@durationFrom":"",
+                  "@durationTo":"",
+                  "@description":"",
+                  "@userid":"Portal:4",
+                  "@user":"Morten Marquard"
+               }
+            ]
+         }
+      ]
+   }
+}

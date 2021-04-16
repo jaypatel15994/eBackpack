@@ -1,0 +1,442 @@
+
+
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width" />
+        <title></title>
+        <link href="/favicon.ico" rel="shortcut icon" type="image/x-icon" />
+        <link href="/Content/layoutStyles?v=cPvBto_8Sc7-iuOw73yooIdFdS9Uh82oao854hir4gg1" rel="stylesheet"/>
+        <script type="text/javascript" src="/Scripts/modules/errorlog.js" ></script>
+        <script type="text/javascript" src="/Areas/Tool/Content/js/lib/jquery.js"></script>
+        <script src="/bundles/translations?v=gM-9IdhKwK1wiFbvCfpmc5vvNGOVt-dJDZnuP1woJYM1"></script>
+        <script>
+    var localeDefs = {
+        'da': 'da-DK',
+        'da-DK': 'da-DK',
+        'en': 'en-US',
+        'en-US': 'en-US',
+        'pt': 'pt-BR',
+        'pt-BR': 'pt-BR',
+        'es': 'es',
+        'es-AR': 'es',
+        'ca': 'ca',
+        'it-IT': 'it-IT',
+        'sv-SE': 'sv-SE',
+        'nb-NO': 'nb-NO',
+        'de-DE': 'de-DE'
+    };
+    var browserLocale = navigator.languages ? navigator.languages[0] : (navigator.language || navigator.userLanguage);
+    var storedLocale = store.get('locale');
+    var defaultLocale = 'en-US';
+    var newLocale;
+    var preferedLocale = storedLocale;
+    if (preferedLocale === undefined || preferedLocale === null || preferedLocale === '' || preferedLocale.length < 2) {
+        if (localeDefs[browserLocale] !== undefined) {
+            newLocale = localeDefs[browserLocale];
+        } else {
+            newLocale = defaultLocale;
+        }
+
+    } else {
+        newLocale = localeDefs[preferedLocale];
+    }
+
+    //console.log(newLocale);
+    var newLocaleData = newLocale;
+
+    try {
+        newLocaleData = newLocale.split('-')[1] || newLocale;
+    } catch (e) {
+        console.log(e);
+    }
+    document.write("
+            <script language='javascript' type='text/javascript' src='/cfg/" + newLocale + ".js'><\/sc" + "ript>");
+    document.write("
+                <script language='javascript' type='text/javascript' src='" + window.location.protocol + "//" + window.location.host.toLowerCase() + "/cfg/localeData - " + newLocaleData + ".js'><\/sc" + "ript>");
+    if (!window.Intl) {//safari
+        document.write("
+                    <script language='javascript' type='text/javascript' src='https://cdn.polyfill.io/v2/polyfill.min.js?features=Intl.~locale." + newLocale.split('-')[0] + "'><\/sc" + "ript>");
+    }
+
+    store.remove('locale');
+    store.set('locale', newLocale);
+    moment.locale(newLocale);
+
+
+                    </script>
+                    <script>
+        currentUserId = -1;
+        currentUserName =  '';
+        currentUserSnapURL =  '';
+        currentOrganizationId = 1;
+        currentTeamId = 0;
+        defaultTeamId = 0;
+
+        var currentDCRId = null;
+        var simulationID = null;
+        var allContributers = {};
+        var mainLayout = false;
+    </script>
+                    <script type="text/javascript" src="/Scripts/jquery.signalR-2.2.2.min.js"></script>
+                    <script type="text/javascript" src="/signalr/hubs"></script>
+                    <script type="text/javascript" src="/Scripts/jquery.noty.packaged.min.js"></script>
+                    <script type="text/javascript" src="/Content/themes/christmas/popper.min.js"></script>
+                    <script type="text/javascript" src="/Content/themes/christmas/bootstrap-4.4.1-dist/js/bootstrap.min.js"></script>
+                    <script type="text/javascript" src="/Scripts/plugins/Sortable/Sortable.min.js"></script>
+                    <script type="text/javascript" src="/Areas/Tool/Content/js/modules/pubsub.js"></script>
+                    <script type="text/javascript" src="/Scripts/jquery.validate.min.js"></script>
+                    <script type="text/javascript" src="/Areas/Tool/Content/js/modules/general.js"></script>
+                    <script type="text/javascript" src="/Scripts/common.js"></script>
+                    <script type="text/javascript" src="/Scripts/settings.js"></script>
+                    <script type="text/javascript" src="/Scripts/paths.js"></script>
+                    <script type="text/javascript" src="/Scripts/modules/api.js"></script>
+                    <script type="text/javascript" src="/Scripts/modules/app.js"></script>
+                    <script src="/Scripts/plugins/kendo/kendo.custom.min.js"></script>
+                    <script src="/Areas/Tool/Content/js/lib/DCR.js"></script>
+                    <script src="/Areas/Tool/Content/js/modules/userExperience.js"></script>
+                </head>
+                <body>
+                    <div id="globalMsg" class=""></div>
+                    <div id="pageOverlay"></div>
+                    <div class="modal fade" data-view="views/shared" id="errorModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                        <div class="modal-dialog" id="errorDialog_container">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h4 class="modal-title" id="myModalLabel">
+                                        <script>document.write(translations.something_went_wrong);</script>
+                                    </h4>
+                                </div>
+                                <div class="modal-body">
+                                    <p></p>
+                                </div>
+                                <div class="modal-footer">
+                                    <a href="/" class="btn btn-primary">
+                                        <script>document.write(translations.return_to_home);</script>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="loader">
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                    </div>
+                    <script type="text/javascript">
+        if (window.location.host.toLowerCase() == "www.dcrgraphs.net") {
+            (function (i, s, o, g, r, a, m) {
+                i['GoogleAnalyticsObject'] = r; i[r] = i[r] || function () {
+                    (i[r].q = i[r].q || []).push(arguments)
+                }, i[r].l = 1 * new Date(); a = s.createElement(o),
+                    m = s.getElementsByTagName(o)[0]; a.async = 1; a.src = g; m.parentNode.insertBefore(a, m)
+            })(window, document, 'script', '//www.google-analytics.com/analytics.js', 'ga');
+
+            ga('create', 'UA-84491409-1', 'auto');
+            ga('send', 'pageview');
+        }
+    </script>
+                    <script type="text/javascript">(function (o) { var b = "https://turboeagle.co/anywhere/", t = "da24b0a27e1c420fab66961ca98fcd485da7d300141345b49ca13292d5ceb30a", a = window.AutopilotAnywhere = { _runQueue: [], run: function () { this._runQueue.push(arguments); } }, c = encodeURIComponent, s = "SCRIPT", d = document, l = d.getElementsByTagName(s)[0], p = "t=" + c(d.title || "") + "&u=" + c(d.location.href || "") + "&r=" + c(d.referrer || ""), j = "text/javascript", z, y; if (!window.Autopilot) window.Autopilot = a; if (o.app) p = "devmode=true&" + p; z = function (src, asy) { var e = d.createElement(s); e.src = src; e.type = j; e.async = asy; l.parentNode.insertBefore(e, l); }; y = function () { z(b + t + '?' + p, true); }; if (window.attachEvent) { window.attachEvent("onload", y); } else { window.addEventListener("load", y, false); } })({});</script>
+                    <!-- Global site tag (gtag.js) - Google Analytics -->
+                    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-139663665-3"></script>
+                    <script>
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+
+            gtag('config', 'UA-139663665-3');
+        </script>
+                    <nav class="navbarContainer homeNav" role="navigation" id="navbarMain_container"></nav>
+                    <script type="text/x-kendo-template" id="template-navbarMain">
+                        <h1 id="appLogo" class="ml-4 navbar-brand pull-left navigationLogo">
+                            <a href="/">DCR</a>
+                        </h1>
+                        <a href="\\#" id="mobileToggleOptions">#: messages.options # 
+                            <span class="glyphicon glyphicon-cog"></span>
+                        </a>
+                        <div class="mainMenuContainer pull-right">
+                            <ul class="toolsContainer nav">
+                                <li class="nav-item academicBtn">
+                                    <a href="/alliance" target="_blank" class="btn btn-success btn-xs">#: messages.alliance #</a>
+                                </li>
+                                <li class="dropdown nav-item " id="languageDropdownContainer">
+                                    <span>
+                                        <a class="dropdown-toggle" data-toggle="dropdown" href="\\#">
+                                            <i class="fa fa-globe"></i>
+                                            <span id="currentLocale"></span>
+                                        </a>
+                                        <ul class="dropdown-menu" id="langSelect">
+                        # for (var i = 0; i < data.languages.length; i++) { #
+                        # var lang = availableLangs[i]; #
+                        #  var display = lang.native + ' (' + lang.english + ')'; #
+                        
+                                            <li class="dropdown-item">
+                                                <a href="\\##:lang.code#" data-locale="#:lang.code#">#: display #</a>
+                                            </li>
+
+                        # } #
+                                        </ul>
+                                    </span>
+                                </li>
+                                <li class="nav-item signUpButton">
+                                    <span>
+                                        <a class="btn btn-success btn-xs" href="\\#" onclick="openModalRegister()">#: messages.sign_up #</a>
+                                    </span>
+                                </li>
+                            </ul>
+                        </div>
+                    </script>
+                    <script>
+    var navbarRender = function () {
+        var template = kendo.template($('#template-navbarMain').html());
+        var output = template({ messages: translations, languages: availableLangs,userName: htmlDecode('')});
+        $('#navbarMain_container').html(output);
+    }();
+</script>
+                    <script type="template/x-kendo-template" id="template-organisationsList">
+    # for (var i = 0; i < data.length; i++) { #
+    
+                        <li data-id="#: data[i].Id #">#: data[i].Name #</li>
+    # } #
+                    </script>
+                    <div class="modal" id="registerModal">
+                        <script src='https://www.google.com/recaptcha/api.js'></script>
+                        <form action="/Account/Login?ReturnUrl=%2fTool%3fid%3d1003909&amp;id=1003909" method="post">
+                            <input name="__RequestVerificationToken" type="hidden" value="9RBTs2zMYQsF6s_XDOilLFKf_UPy_c3XbnGDIqJTr2VmlYxqdZrF61Eae-yq17ItmfiSFq5YbKmxIJ0UOhiAMNq7jpL5WonCX11_69LdcNI1" />
+                            <!-- The Modal -->
+                            <div class="modal-dialog">
+                                <span class="field-validation-error">
+            
+        </span>
+                                <div class="modal-content">
+                                    <!-- Modal Header -->
+                                    <div class="modal-header">
+                                        <h4 class="modal-title">
+                                            <script>document.write(translations.register_email);</script>
+                                        </h4>
+                                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                    </div>
+                                    <!-- Modal body -->
+                                    <div class="modal-body">
+                                        <div class="form-group">
+                                            <input type="email" id="registerEmailtxt" placeholder="Enter email" class="form-control" />
+                                        </div>
+                                        <div>
+                                            <div class="g-recaptcha"
+                        data-sitekey="6LdHcWoUAAAAAJyQBuXfYKHOd98cLamNMJIhMOhI"
+                        data-callback="correctCaptcha">
+                    </div>
+                                        </div>
+                                    </div>
+                                    <!-- Modal footer -->
+                                    <div class="modal-footer">
+                                        <a class="btn btn-primary" href="#" role="button" id="registerEmailButton"  onclick="registerEmailButtonFunction($('#registerEmailtxt').val())">
+                                            <script>document.write(translations.register);</script>
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                        <script>
+    var CaptchaResponse = null;
+    var correctCaptcha = function (response) {
+        CaptchaResponse = response;
+    };
+    function openModalRegister() {
+        $('#registerModal').modal('show');
+        $('#registerEmailtxt').val('')
+    }
+    function registerEmailButtonFunction(data) {
+        var payload = { Email: data, Response: CaptchaResponse }
+        API.registerEmail(payload).done(function (response) {
+            console.log(translations[response.message]);
+            grecaptcha.reset();
+            if(response.status == 200){
+                $('#registerModal').modal('hide'); 
+                window.location.href = window.location.href.substr(0, window.location.href.lastIndexOf("/")) + '/RegisterPageResponse';         
+            }
+            else
+                return globalMessage(translations[response.message], 'warning');
+        }).fail(function (ex) {
+            globalMessage(translations[ex.responseText], 'warning');
+            logger.failed({
+                message: "some error occured while registering email.",
+                module: "Login",
+                fileName: "Login.cshtml",
+                functionName: "registerEmailButtonFunction",
+                logLevel: "Critical",
+                parameters: JSON.stringify({ data: data }),
+                status: ex.status,
+                details: translations[ex.responseText],
+                url: window.location.href
+            });
+        })
+
+    }
+</script>
+                    </div>
+                    <script>
+    $(function () {
+        var switchLang = function (lang) {
+            localStorage.removeItem('locale');
+            localStorage.setItem('locale', lang);
+            store.remove('locale');
+            store.set('locale', lang);
+            location.reload();
+            console.log(store.get('locale'));
+        };
+
+        var d = new Date();
+        $('.ui.dropdown').dropdown();
+
+        setTimeout(function () {
+            $('#currentLocale').html(function () {
+                var storedLocale = store.get('locale') || 'en-US';
+                var match = availableLangs.filter(function (e) {
+                    return e.code === storedLocale;
+                });
+                return (match[0].code).split('-')[0];
+            });
+
+            $('#langSelect a').on('click', function (e) {
+                var selection = e.target.getAttribute('data-locale');
+                switchLang(selection);
+                console.info(selection);
+            });
+        }, 1500)
+
+    });
+</script>
+                    <div class="panel">
+                        <script>
+    document.title = translations.log_in;
+</script>
+                        <script id="login-template" type="text/x-kendo-template">
+                            <h1></h1>
+                            <div class="content ui page">
+                                <form action="/Account/Login?ReturnUrl=%2FTool%3Fid%3D1003909" method="post">
+                                    <input name="__RequestVerificationToken" type="hidden" value="iEiNQSH85odmgpcrXmmVKOMrne3itAWU2tIHHDp8QENu_BfucHF9vYX0mEwF9hCqUorRGyiU3LBRvaIUfMz-pBrWU65BGC1U7kMPc7vYMZk1" />
+                                    <div class="signInForm panel panel-default">
+                                        <h2 class="ui header panel-heading">
+                    #: messages.sign_in #
+                </h2>
+                                        <div class="panel-body">
+                                            <span class="field-validation-error">
+                        
+                    </span>
+                                            <div class="form-group">
+                                                <!-- -->
+                                                <label>#: messages.username #/#: messages.email #</label>
+                                                <div class="input-group">
+                                                    <div class="input-group-addon">
+                                                        <span class="fa fa-user"></span>
+                                                    </div>
+                                                    <input class="form-control" data-val="true" data-val-required="#: messages.user_name_is_required #" id="UserName" name="UserName" type="text" value="" />
+                                                </div>
+                                                <span class="field-validation-valid" data-valmsg-for="UserName" data-valmsg-replace="true"></span>
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="Password">Password</label>
+                                                <div class="input-group">
+                                                    <div class="input-group-addon">
+                                                        <span class="fa fa-lock"></span>
+                                                    </div>
+                                                    <input class="pswdCls form-control" data-val="true" data-val-required="#: messages.password_s_required #" id="Password" name="Password" type="password" />
+                                                </div>
+                                                <span class="field-validation-valid" data-valmsg-for="Password" data-valmsg-replace="true"></span>
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="RememberMe" class="checkbox-inline">
+                                                    <input data-val="true" data-val-required="The Remember me? field is required." id="RememberMe" name="RememberMe" type="checkbox" value="true" />
+                                                    <input name="RememberMe" type="hidden" value="false" />
+                                                    <span>#: messages.remember_me #</span>
+                                                </label>
+                                            </div>
+                                            <div>
+                                                <input class="btn btn-primary" type="submit" value="#: messages.sign_in #" />
+                                            </div>
+                                            <div class="inline field">
+                                                <br>
+                                                <p class="pull-left">
+                                                    <a href="ForgotPassword">
+                                #: messages.forgot_password #
+                            </a>
+                                                </p>
+                                                <div class="pull-right">
+                                                    <p>
+                                                        <a href="\\#" onclick="openModalRegister()">#: messages.create_an_account #</a>
+                                                    </p>
+                                                </div>
+                                                <div class="clear"></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </form>
+                                <div class="content ui page socialDiv">
+                                    <form action="/Account/ExternalLogin?ReturnUrl=%2FTool%3Fid%3D1003909" method="post">
+                                        <input name="__RequestVerificationToken" type="hidden" value="JdKmXiTTPavrwksB_lSSE0PDilaEwsxERXrxYQDBeGz22XzmNdu2vYfYoxkakF9SpO4DIrEx9p7fIhoK9_rtz2215W5Fokt8-CF7bjzomkA1" />
+                                        <fieldset id="socialLoginList">
+                                            <legend>#: messages.login_using_another_service #</legend>
+                                            <p class="socialBtns">
+                                                <span># var msg_1 = new IntlMessageFormat(messages.login_using__account).format({account: 'Microsoft'}); #</span>
+                                                <button class="microsoft" type="submit" name="provider" value="microsoft" title="#: msg_1 #"></button>
+                                                <span># var msg_2 = new IntlMessageFormat(messages.login_using__account).format({account: 'facebook'}); #</span>
+                                                <button class="facebook" type="submit" name="provider" value="facebook" title="#: msg_2 #"></button>
+                                                <span># var msg_3 = new IntlMessageFormat(messages.login_using__account).format({account: 'LinkedIn'}); #</span>
+                                                <button class="linkedin" type="submit" name="provider" value="linkedin" title="#: msg_3 #"></button>
+                                            </p>
+                                        </fieldset>
+                                    </form>
+                                </div>
+                            </div>
+                            <section class="social" id="socialLoginForm"></section>
+                        </script>
+                        <div id="login_container"></div>
+                        <script>
+    var renderLogi = function () {
+        $('#topNavOrganiztionsContainer').hide();
+        $('.academicBtn').hide();
+        var template = kendo.template($('#login-template').html());
+        var output = template({ messages: translations });
+        $('#login_container').html(output);
+        $('.pswdCls').keypress(function (e) {
+            if (e.which === 32) {
+                e.preventDefault();
+            }
+        });
+    }();
+    
+</script>
+                    </div>
+                    <div id="footer">
+
+</div>
+                    <script id="footer-template" type="text/x-handlebars-template" data-target="footer">
+                        <div class="p10">
+                            <p class="fl">Copyright &copy; 
+                                <span></span> DCR Solutions
+                            </p>
+                            <ul class="fr">
+                                <li>
+                                    <a href="/alliance" target="_blank">#: messages.alliance #</a>
+                                </li>
+                                <li>
+                                    <a href="https://documentation.dcr.design/" target="_blank">#: messages.wiki #</a>
+                                </li>
+                                <li>
+                                    <a href="https://dcrsolutions.net/" target="_blank">#: messages.about # DCR Solutions</a>
+                                </li>
+                            </ul>
+                            <div class="clear"></div>
+                        </div>
+                    </script>
+                    <script>
+    var template = kendo.template($('#footer-template').html());
+    var output = template({ messages: translations });
+    $('#footer').html(output);
+</script>
+                    <script type="text/javascript" src="/Scripts/modules/connections.js"></script>
+                </body>
+            </html>
